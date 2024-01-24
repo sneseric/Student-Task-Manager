@@ -66,6 +66,18 @@ nav ul li a:hover, nav ul li a:focus {
     display: block;
 }
 
+.container {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px; 
+}
+
+.section {
+    flex: 1; 
+    padding: 10px;
+    box-sizing: border-box; 
+}
+
 .input {
     margin-left: 5px;
 }
