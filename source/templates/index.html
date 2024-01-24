@@ -20,16 +20,43 @@
                 </ul>
             </nav>
         </header>
-        <div class="input">
-            <h1>CloudTask Pro</h1>
-            <img src="{{ url_for('static', filename='assets/logo.webp') }}" alt="logo image" style="width: 15%;">
-            <form action="/add_task" method="post">
-                <input type="text" name="task" placeholder="Enter a task">
-                <input type="date" name="due_date" placeholder="Due Date">
-                <label for="due_date">Due Date</label>
-                <button type="submit">Add</button> 
-            </form> 
-        </div>   
+        <div class="container">
+            <div class="section">
+                <div class="input">
+                    <h1 style="margin-bottom: 0;">CloudTask Pro</h1>
+                    <p style="margin-top: 0;">Streamline your studies and elevate your efficiency.</p>
+                    <img src="{{ url_for('static', filename='assets/logo.webp') }}" alt="logo image" style="width: 35%;">
+                    <h3>BEGIN NOW</h3>
+                    <form action="/add_task" method="post">
+                        <input type="text" name="task" placeholder="Enter a task">
+                        <input type="date" name="due_date" placeholder="Due Date">
+                        <label for="due_date">Due Date</label>
+                        <button type="submit">Add</button> 
+                    </form> 
+                </div>   
+            </div>
+            <div class="section">
+                <h2>What is CloudTask Pro?</h2>
+                <p>CloudTask Pro is an innovative task management tool designed specifically for the modern student. In today's fast-paced academic environment, 
+                   staying organized and on top of your studies is crucial. CloudTask Pro simplifies this process, offering a smart, intuitive platform that integrates all 
+                   your academic tasks in one place. It's more than just a to-do list. It's your personal academic assistant, helping you manage deadlines, 
+                   track your progress, and stay ahead of your schedule.</p>
+                <h3>Features:</h3>
+                <ul>
+                    <li><strong>Sort by Due Date:</strong> Automatically arranges tasks by their due dates, allowing efficient task prioritization and deadline management.
+                    </li>
+                    <li><strong>Daily Task Summary:</strong> Provides a clear summary of upcoming tasks and deadlines, with an optional feature to send reminders 
+                                via a notification system.
+                    </li>
+                    <li><strong>Task Completion Statistics:</strong> Displays insightful statistics on completed versus pending tasks, offering a clear view of productivity 
+                                 and task management over various timeframes.
+                    </li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2><!-- Content for the third section --></h2>
+            </div>
+        </div>      
     </body>
 </html>
     
