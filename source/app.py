@@ -3,10 +3,9 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# Database
+# Database code will go here
 #class ToDoList:
     
-
 @app.route('/')
 def index():
     return render_template('index.html')
