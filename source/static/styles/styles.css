@@ -82,5 +82,112 @@ nav ul li a:hover, nav ul li a:focus {
     margin-left: 5px;
 }
 
+button[type="submit"] {
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    background-color: red; 
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    font-size: inherit; 
+    transition: transform 0.2s; 
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+button[type="submit"]:active {
+    transform: scale(0.95); /* scale down the button slightly when active */
+}
+
+.stats {
+    text-align: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider background */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 25.5px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19.5px;
+    width: 19.5px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* The switch when toggled on */
+.switch input:checked + .slider {
+    background-color: red;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(19.5px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 25.5px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+
+.popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.popup .close {
+    float: right;
+    cursor: pointer;
+}
+
+.popup h2 {
+    margin-top: 0;
+}
+
+.popup ul {
+    list-style-type: none;
+    padding: 0;
+}
+
 
 
