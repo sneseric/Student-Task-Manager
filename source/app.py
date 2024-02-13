@@ -61,18 +61,51 @@ class ToDoList:
         tasks = self.cursor.fetchall()
         return tasks
 
-    def count_completed_tasks(self, days):
-        query = "SELECT COUNT(*) FROM task_statistics WHERE date_completed >= %s"
-        date_threshold = date.today() - timedelta(days=days)
-        self.cursor.execute(query, (date_threshold,))
-        count = self.cursor.fetchone()[0]
-        return count
-
-    def count_total_tasks(self):
-        query = "SELECT COUNT(*) FROM py_todo_items"
+    def total_tasks(self):
+        query = "SELECT MAX(id) FROM task_statistics"
         self.cursor.execute(query)
-        count = self.cursor.fetchone()[0]
-        return count
+        total = self.cursor.fetchone()[0]
+        print("Total tasks:", total)
+        return total
+
+    def total_completed_tasks_week(self):
+        today = date.today()
+        week_ago = today - timedelta(days=7)
+        query = "SELECT COUNT(*) FROM task_statistics WHERE date_completed IS NOT NULL AND DATEDIFF(%s, date_completed) <= 7"
+        self.cursor.execute(query, (today,))
+        total_completed_week = self.cursor.fetchone()[0]
+        print("Total completed tasks in the last week:", total_completed_week)
+        return total_completed_week
+
+    def total_completed_tasks_week_percentage(self):
+        total_tasks = self.total_tasks()
+        total_completed_tasks_week = self.total_completed_tasks_week()
+        percentage = (total_completed_tasks_week / total_tasks) * 100
+        print("Percentage of completed tasks in the last week:", "{:.2f}%".format(percentage))
+        return percentage
+
+    def total_completed_tasks_month(self):
+        today = date.today()
+        month_ago = today - timedelta(days=30)
+        query = "SELECT COUNT(*) FROM task_statistics WHERE date_completed IS NOT NULL AND DATEDIFF(%s, date_completed) <= 30"
+        self.cursor.execute(query, (today,))
+        total_completed_month = self.cursor.fetchone()[0]
+        print("Total completed tasks in the last month:", total_completed_month)
+        return total_completed_month
+
+    def total_completed_tasks_month_percentage(self):
+        total_tasks = self.total_tasks()
+        total_completed_tasks_month = self.total_completed_tasks_month()
+        percentage = (total_completed_tasks_month / total_tasks) * 100
+        print("Percentage of completed tasks in the last month:", "{:.2f}%".format(percentage))
+        return percentage
+
+    def average_completion_time(self):
+        query = "SELECT ROUND(AVG(DATEDIFF(date_completed, date_added)), 2) FROM task_statistics WHERE date_completed IS NOT NULL"
+        self.cursor.execute(query)
+        average_time = self.cursor.fetchone()[0]
+        print("Average completion time:", "{:.2f}".format(average_time), "days")
+        return average_time
 
     def close_connection(self):
         self.conn.close()
@@ -93,7 +126,6 @@ def index():
         stats = None
 
     return render_template('index.html', tasks=tasks, stats=stats)
-
 
 
 @app.route('/add_task', methods=['POST'])
@@ -163,37 +195,16 @@ def due_tasks():
         return jsonify([])
 
 
-@app.route('/get_task_statistics')
-def get_task_statistics():
-    conn = mysql.connector.connect(host="127.0.0.1", user="root", password="password", database="py_todo_db")
-    cursor = conn.cursor()
 
-    # Get counts of completed tasks in the last week and last month
-    completed_last_week = to_do_list.count_completed_tasks(7)
-    completed_last_month = to_do_list.count_completed_tasks(30)
-
-    # Get total tasks in the to-do list
-    total_tasks = to_do_list.count_total_tasks()
-
-    # Calculate completion percentages
-    if total_tasks > 0:
-        completion_percentage_week = (completed_last_week / total_tasks) * 100
-        completion_percentage_month = (completed_last_month / total_tasks) * 100
-    else:
-        completion_percentage_week = 0
-        completion_percentage_month = 0
-
-    cursor.close()
-    conn.close()
-
-    return jsonify({
-        'completed_last_week': completed_last_week,
-        'completed_last_month': completed_last_month,
-        'completion_percentage_week': completion_percentage_week,
-        'completion_percentage_month': completion_percentage_month
-    })
 
 
 if __name__ == "__main__":
+    total_tasks = to_do_list.total_tasks()
+    total_completed_tasks_week = to_do_list.total_completed_tasks_week()
+    total_completed_tasks_week_percentage = to_do_list.total_completed_tasks_week_percentage()
+    total_completed_tasks_month = to_do_list.total_completed_tasks_month()
+    total_completed_tasks_month_percentage = to_do_list.total_completed_tasks_month_percentage()
+    average_completion_time = to_do_list.average_completion_time()
     app.run(debug=True)
+
 
