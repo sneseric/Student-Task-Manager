@@ -35,14 +35,21 @@ class ToDoList:
         self.conn.commit()
 
     def delete_task(self, index):
-        select_query = "SELECT id FROM py_todo_items"
+        select_query = "SELECT id, task FROM py_todo_items"
         self.cursor.execute(select_query)
         rows = self.cursor.fetchall()
 
         if 0 <= index < len(rows):
-            task_id = rows[index][0]
+            task_id, task_name = rows[index]
+
+            # Delete the task from py_todo_items
             delete_query = "DELETE FROM py_todo_items WHERE id = %s"
             self.cursor.execute(delete_query, (task_id,))
+            self.conn.commit()
+
+            # Update task completion date in task_statistics
+            update_query = "UPDATE task_statistics SET date_completed = CURDATE() WHERE task = %s"
+            self.cursor.execute(update_query, (task_name,))
             self.conn.commit()
         else:
             print("Invalid task number.")
