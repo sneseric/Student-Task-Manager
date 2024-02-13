@@ -69,12 +69,11 @@
                 <div class="stats">
                     <h2>Your Personalized Task Statistics</h2>
                     <p>Number of tasks completed in the last week: {{ stats.completed_last_week }}</p>
-                    <p>Percentage of completed tasks in the last week: {{ stats.completion_percentage_week }}%</p>
+                    <p>Percentage of completed tasks in the last week: {{ stats.completion_percentage_week|round(2) }}%</p>
                     <p>Number of tasks completed in the last month: {{ stats.completed_last_month }}</p>
-                    <p>Percentage of completed tasks in the last month: {{ stats.completion_percentage_month }}%</p>
-                    <p>test</p>
+                    <p>Percentage of completed tasks in the last month: {{ stats.completion_percentage_month|round(2) }}%</p>
+                    <p>Average completion time: {{ stats.average_completion_time }} days</p>
                 </div>
-
             </div>
         </div>      
     </body>

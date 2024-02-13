@@ -194,6 +194,27 @@ def due_tasks():
         conn.close()
         return jsonify([])
 
+@app.route('/get_task_statistics')
+def get_task_statistics():
+    total_tasks = to_do_list.total_tasks()
+    total_completed_tasks_week = to_do_list.total_completed_tasks_week()
+    total_completed_tasks_month = to_do_list.total_completed_tasks_month()
+    total_completed_tasks_week_percentage = to_do_list.total_completed_tasks_week_percentage()
+    total_completed_tasks_month_percentage = to_do_list.total_completed_tasks_month_percentage()
+    average_completion_time = to_do_list.average_completion_time()
+
+    statistics = {
+        'total_tasks': total_tasks,
+        'completed_last_week': total_completed_tasks_week,
+        'completion_percentage_week': total_completed_tasks_week_percentage,
+        'completed_last_month': total_completed_tasks_month,
+        'completion_percentage_month': total_completed_tasks_month_percentage,
+        'average_completion_time': average_completion_time
+    }
+
+    return jsonify(statistics)
+
+
 
 
 
