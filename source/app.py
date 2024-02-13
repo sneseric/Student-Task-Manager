@@ -1,11 +1,16 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file
 from flask_cors import CORS
 import mysql.connector
 from datetime import date, timedelta
 import requests
+import matplotlib.pyplot as plt
+import os
+
 
 app = Flask(__name__)
 CORS(app)
+
+
 
 
 class ToDoList:
@@ -107,6 +112,21 @@ class ToDoList:
         print("Average completion time:", "{:.2f}".format(average_time), "days")
         return average_time
 
+    def generate_pie_chart(self):
+        total_completed_tasks_week = self.total_completed_tasks_week()
+        total_tasks = self.total_tasks()
+        data = [total_completed_tasks_week, total_tasks - total_completed_tasks_week]
+        labels = ['Completed', 'Pending']
+        plt.figure(figsize=(8, 8), facecolor='#E4ECF0')
+        plt.pie(data, labels=labels, autopct='%1.1f%%', textprops={'fontsize': 22})
+        plt.title('Total Tasks Completed in Last Week', fontsize=28)
+
+        # Use os.path.join to create the image path
+        image_path = os.path.join('static', 'assets', 'pie_chart.png')
+        plt.savefig(image_path)
+        plt.close()
+        return image_path
+
     def close_connection(self):
         self.conn.close()
 
@@ -118,6 +138,9 @@ to_do_list = ToDoList()
 def index():
     tasks = to_do_list.view_tasks()
 
+    # Generate pie chart image
+    pie_chart_image = to_do_list.generate_pie_chart()
+
     # Fetch task statistics
     stats_response = requests.get('http://127.0.0.1:5000/get_task_statistics')
     if stats_response.status_code == 200:
@@ -125,7 +148,7 @@ def index():
     else:
         stats = None
 
-    return render_template('index.html', tasks=tasks, stats=stats)
+    return render_template('index.html', tasks=tasks, stats=stats, pie_chart_image=pie_chart_image)
 
 
 @app.route('/add_task', methods=['POST'])
