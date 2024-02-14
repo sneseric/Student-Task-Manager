@@ -178,7 +178,6 @@ def index():
         stats = stats_response.json()
     else:
         stats = None
-
     return render_template('index.html', tasks=tasks, stats=stats, pie_chart_image=pie_chart_image)
 
 
