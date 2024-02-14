@@ -64,21 +64,23 @@
                     <li><strong>Task Completion Statistics:</strong> Displays insightful statistics on completed versus pending tasks, offering a clear view of productivity and task management over various timeframes.
                     </li>
                 </ul>
+                <div class="stats" style="text-align: left">
+                    <h2>Your Personalized Task Statistics</h2>
+                    <ul>
+                        <li><p>Number of tasks completed in the last week: <span style="font-weight: bold;">{{ stats.completed_last_week }}</span></p></li>
+                        <li><p>Percentage of completed tasks in the last week: <span style="font-weight: bold;"> {{ stats.completion_percentage_week|round(2) }}% </span></p></li>
+                        <li><p>Number of tasks completed in the last month: <span style="font-weight: bold;"> {{ stats.completed_last_month }} </span></p></li>
+                        <li><p>Percentage of completed tasks in the last month: <span style="font-weight: bold;"> {{ stats.completion_percentage_month|round(2) }}% </span></p></li>
+                        <li><p>Average completion time: <span style="font-weight: bold;"> {{ stats.average_completion_time }} days </span></p></li>
+                    </ul>
+                </div>
             </div>
             <div class="section">
-                <div class="stats">
-                    <h2>Your Personalized Task Statistics</h2>
-                    <p>Number of tasks completed in the last week: {{ stats.completed_last_week }}</p>
-                    <p>Percentage of completed tasks in the last week: {{ stats.completion_percentage_week|round(2) }}%</p>
-                    <p>Number of tasks completed in the last month: {{ stats.completed_last_month }}</p>
-                    <p>Percentage of completed tasks in the last month: {{ stats.completion_percentage_month|round(2) }}%</p>
-                    <p>Average completion time: {{ stats.average_completion_time }} days</p>
-                </div>
+
                 <div class="visual" style="text-align: center;">
                     <h2 >Visualize Your Progress</h2>
                     <img  src="{{ pie_chart_image }}" alt="Pie Chart" style="width: 400px; height: auto;">
-                    <img src="{{ trend_line_graph_path }}" alt="Trend Line Graph">
-
+                    <img style="margin-top: -50px;" src="{{ trend_line_graph_path }}" alt="Trend Line Graph">
                 </div>
 
             </div>

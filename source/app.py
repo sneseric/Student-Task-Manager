@@ -161,11 +161,25 @@ class ToDoList:
         dates = [result[0] for result in results]
         completion_times = [result[1] for result in results]
 
+        # adjust size of the graph
+        fig_width_px = 533
+        fig_height_px = 400
+        plt.figure(figsize=(fig_width_px / 100, fig_height_px / 100), dpi=100, facecolor='#E4ECF0')
+
+        plt.axes().set_facecolor('#E4ECF0')  # Change background color of the graph
+
+        # Formatting x-axis ticks to display only month and day
+        plt.gca().xaxis.set_major_formatter(plt.matplotlib.dates.DateFormatter('%m-%d'))
+
         # Generate the trend line graph
         plt.plot(dates, completion_times, marker='o')
         plt.xlabel('Date')
-        plt.ylabel('Average Completion Time')
-        plt.title('Trend Line Graph of Average Completion Time')
+        plt.ylabel('Average Completion Time (Days)')
+        plt.title('Average Completion Time Trends', fontsize=14)
+        plt.xticks(rotation=None,fontsize=10)  # Rotate x-axis ex: rotation=90 for labels vertically and change font-size
+
+
+        # Use os.path.join to create the image path
         trend_line_graph_path = os.path.join('static', 'assets', 'trend_line_graph.png')
         plt.savefig(trend_line_graph_path)
         plt.close()
@@ -287,9 +301,6 @@ def get_task_statistics():
     }
 
     return jsonify(statistics)
-
-
-
 
 
 if __name__ == "__main__":
