@@ -270,6 +270,7 @@ def get_task_statistics():
 
 
 if __name__ == "__main__":
+    #
     #total_tasks = to_do_list.total_tasks()
     #total_completed_tasks_week = to_do_list.total_completed_tasks_week()
     #total_completed_tasks_week_percentage = to_do_list.total_completed_tasks_week_percentage()
