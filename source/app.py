@@ -2,16 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, s
 from flask_cors import CORS
 import mysql.connector
 from datetime import date, timedelta
+from datetime import datetime
 import requests
 import matplotlib.pyplot as plt
+import numpy as np
 import os
-
 
 app = Flask(__name__)
 CORS(app)
-
-
-
 
 class ToDoList:
     def __init__(self):
@@ -122,17 +120,43 @@ class ToDoList:
         plt.title('Total Tasks Completed in Last Week', fontsize=28)
 
         # Use os.path.join to create the image path
-        image_path = os.path.join('static', 'assets', 'pie_chart.png')
-        plt.savefig(image_path)
+        image_path_pie = os.path.join('static', 'assets', 'pie_chart.png')
+        plt.savefig(image_path_pie)
         plt.close()
-        return image_path
+        return image_path_pie
+
+    def add_current_date(self, date):
+        # Check if the date already exists
+        select_query = "SELECT COUNT(*) FROM completion_time WHERE date = %s"
+        self.cursor.execute(select_query, (date,))
+        count = self.cursor.fetchone()[0]
+        if count == 0:
+            insert_query = "INSERT INTO completion_time (date) VALUES (%s)"
+            self.cursor.execute(insert_query, (date,))
+            self.conn.commit()
+            print(f"Date {date} added successfully.")
+        else:
+            print(f"Date {date} already exists in the table.")
+
+    def update_current_date(self):
+        # Query to update NULL values in avg_completion_time column
+        update_query = """
+            UPDATE completion_time 
+            SET avg_completion_time = (
+                SELECT ROUND(AVG(DATEDIFF(date_completed, date_added)), 2) 
+                FROM task_statistics 
+                WHERE date_completed IS NOT NULL
+            ) 
+            WHERE avg_completion_time IS NULL
+        """
+        self.cursor.execute(update_query)
+        self.conn.commit()
+        print("Average completion times updated.")
 
     def close_connection(self):
         self.conn.close()
 
-
 to_do_list = ToDoList()
-
 
 @app.route('/')
 def index():
@@ -140,6 +164,13 @@ def index():
 
     # Generate pie chart image
     pie_chart_image = to_do_list.generate_pie_chart()
+
+    # add today's date to completion_time table
+    today = date.today()
+    to_do_list.add_current_date(today)
+
+    # Update average completion times
+    to_do_list.update_current_date()
 
     # Fetch task statistics
     stats_response = requests.get('http://127.0.0.1:5000/get_task_statistics')
@@ -238,17 +269,13 @@ def get_task_statistics():
     return jsonify(statistics)
 
 
-
-
-
-
 if __name__ == "__main__":
-    total_tasks = to_do_list.total_tasks()
-    total_completed_tasks_week = to_do_list.total_completed_tasks_week()
-    total_completed_tasks_week_percentage = to_do_list.total_completed_tasks_week_percentage()
-    total_completed_tasks_month = to_do_list.total_completed_tasks_month()
-    total_completed_tasks_month_percentage = to_do_list.total_completed_tasks_month_percentage()
-    average_completion_time = to_do_list.average_completion_time()
+    #total_tasks = to_do_list.total_tasks()
+    #total_completed_tasks_week = to_do_list.total_completed_tasks_week()
+    #total_completed_tasks_week_percentage = to_do_list.total_completed_tasks_week_percentage()
+    #total_completed_tasks_month = to_do_list.total_completed_tasks_month()
+    #total_completed_tasks_month_percentage = to_do_list.total_completed_tasks_month_percentage()
+    #average_completion_time = to_do_list.average_completion_time()
     app.run(debug=True)
 
 
