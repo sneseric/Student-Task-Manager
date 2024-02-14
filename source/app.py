@@ -153,6 +153,24 @@ class ToDoList:
         self.conn.commit()
         print("Average completion times updated.")
 
+    def generate_trend_line_graph(self):
+        # Fetch data from the completion_time table
+        cursor = to_do_list.cursor
+        cursor.execute("SELECT date, avg_completion_time FROM completion_time ORDER BY date")
+        results = cursor.fetchall()
+        dates = [result[0] for result in results]
+        completion_times = [result[1] for result in results]
+
+        # Generate the trend line graph
+        plt.plot(dates, completion_times, marker='o')
+        plt.xlabel('Date')
+        plt.ylabel('Average Completion Time')
+        plt.title('Trend Line Graph of Average Completion Time')
+        trend_line_graph_path = os.path.join('static', 'assets', 'trend_line_graph.png')
+        plt.savefig(trend_line_graph_path)
+        plt.close()
+        return trend_line_graph_path
+
     def close_connection(self):
         self.conn.close()
 
@@ -172,13 +190,16 @@ def index():
     # Update average completion times
     to_do_list.update_current_date()
 
+    # Generate trend line graph image
+    trend_line_graph_path = to_do_list.generate_trend_line_graph()
+
     # Fetch task statistics
     stats_response = requests.get('http://127.0.0.1:5000/get_task_statistics')
     if stats_response.status_code == 200:
         stats = stats_response.json()
     else:
         stats = None
-    return render_template('index.html', tasks=tasks, stats=stats, pie_chart_image=pie_chart_image)
+    return render_template('index.html', tasks=tasks, stats=stats, pie_chart_image=pie_chart_image, trend_line_graph_path=trend_line_graph_path)
 
 
 @app.route('/add_task', methods=['POST'])
@@ -266,6 +287,9 @@ def get_task_statistics():
     }
 
     return jsonify(statistics)
+
+
+
 
 
 if __name__ == "__main__":
