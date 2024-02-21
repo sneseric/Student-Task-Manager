@@ -8,6 +8,10 @@ body {
 }
 
 header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     background: #005f73;
     color: #fff;
     padding: 10px 0;
@@ -15,13 +19,16 @@ header {
     top: 0;
     width: 100%;
     z-index: 1000;
+    height: 40px;
 }
 
 nav {
     display: flex;
     justify-content: center;
+
     align-items: center;
 }
+
 
 nav ul {
     list-style: none;
@@ -35,6 +42,9 @@ nav ul li {
 }
 
 nav ul li a {
+    display: flex;
+    align-items: center;
+
     color: #fff;
     text-decoration: none;
     font-weight: bold;
@@ -48,14 +58,17 @@ nav ul li a {
     font-size: 18px;
 }
 
-nav ul li a:hover, nav ul li a:focus {
-    color: #e76f51;
+.dropdown-content a:hover {
+    text-decoration: underline !important; /* Forces underline on hover */
+    color: #e76f51 !important;
 }
+
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9
+    background-color: #005f73;
+
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     padding: 12px 16px;
@@ -189,5 +202,141 @@ button[type="submit"]:active {
     padding: 0;
 }
 
+/* Mobile Optimization - Responsive Design -------------------------------------------------- */
 
+
+@media screen and (max-width: 600px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .section {
+        margin: 10px 0;
+    }
+
+    nav ul li {
+        margin: 5px;
+    }
+
+    nav ul li a {
+        font-size: 1.2em;
+    }
+
+    button[type="submit"] {
+        padding: 8px 16px;
+    }
+}
+
+
+/* Make images flexible */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Adjust button and link sizes for easier tapping
+button[type="submit"], nav ul li a {
+    padding: 10px;
+} */
+
+
+/* Hamburger Menu */
+/* Base and layout styles */
+#navigation nav ul,
+#navigation nav ul li {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#navigation nav ul li a {
+    text-decoration: none;
+    color: white;
+    padding: 15px;
+    display: block;
+}
+
+.nav-toggle {
+    display: none; /* Checkbox is always hidden */
+}
+
+.nav-toggle-label {
+    display: none; /* Hamburger icon label is hidden by default */
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 30px;
+}
+
+.nav-toggle-label span,
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+    display: none; /* Initially hide the hamburger icon components */
+}
+
+
+/* Hamburger icon styling */
+@media (max-width: 600px) {
+    .nav-toggle-label {
+        display: block; /* Show hamburger icon at 600px or below */
+        height: 40px;
+        padding-top: 20px;
+        margin-left: 5px;
+    }
+
+    .nav-toggle-label span,
+    .nav-toggle-label span::before,
+    .nav-toggle-label span::after {
+        display: block;
+        background-color: white; /* Icon color */
+        height: 3px; /* Line thickness */
+        width: 30px; /* Line width - default 100%*/
+        position: absolute;
+        transition: 0.3s;
+    }
+
+    .nav-toggle-label span {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .nav-toggle-label span::before {
+        content: "";
+        top: -10px;
+    }
+
+    .nav-toggle-label span::after {
+        content: "";
+        top: 10px;
+    }
+
+    .nav-toggle:checked + .nav-toggle-label + nav ul,
+    .nav-toggle:checked ~ nav ul {
+        display: block;
+    }
+
+    nav ul {
+        display: none; /* Hide menu by default */
+        position: absolute;
+        background-color: #005f73; /* Adjust menu background as needed */
+        top: 60px; /* Adjust based on the height of the icon - default 30px */
+        left: 0;
+        width: 100%;
+        padding: 0;
+    }
+
+    nav ul li {
+        display: block;
+    }
+
+    nav ul li a {
+        padding: 20px;
+    }
+}
+
+
+
+/* ----------------------------------------------------------------------------------------- */
 

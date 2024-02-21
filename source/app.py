@@ -116,7 +116,7 @@ class ToDoList:
         data = [total_completed_tasks_week, total_tasks - total_completed_tasks_week]
         labels = ['Completed', 'Pending']
         plt.figure(figsize=(8, 8), facecolor='#E4ECF0')
-        plt.pie(data, labels=labels, autopct='%1.1f%%', textprops={'fontsize': 22})
+        plt.pie(data, labels=labels, autopct='%1.1f%%', textprops={'fontsize':17.5})
         plt.title('Total Tasks Completed in Last Week', fontsize=28)
 
         # Use os.path.join to create the image path
