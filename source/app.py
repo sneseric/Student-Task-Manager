@@ -219,8 +219,12 @@ class ToDoList:
             plt.xlabel('Date')
             plt.ylabel('Average Completion Time (Days)')
             plt.title('Average Completion Time Trends', fontsize=14)
-            plt.xticks(rotation=None,fontsize=10)  # Rotate x-axis ex: rotation=90 for labels vertically and change font-size
 
+            # Set x-axis ticks to display at 7-day intervals
+            plt.gca().xaxis.set_major_locator(plt.MultipleLocator(7))
+
+            plt.xticks(rotation=45,
+                       fontsize=10)  # Rotate x-axis ex: rotation=90 for labels vertically and change font-size
 
             # Use os.path.join to create the image path
             trend_line_graph_path = os.path.join('static', 'assets', 'trend_line_graph.png')
@@ -229,7 +233,6 @@ class ToDoList:
             return trend_line_graph_path
         except mysql.connector.Error as err:
             print("Error occurred:", err)
-
     def close_connection(self):
         try:
             self.conn.close()
