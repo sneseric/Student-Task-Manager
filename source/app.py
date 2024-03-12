@@ -3,10 +3,12 @@ from flask_cors import CORS
 import mysql.connector
 from datetime import date, timedelta
 from datetime import datetime
+import subprocess
 import requests
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from urllib.parse import quote
 
 app = Flask(__name__)
 CORS(app)
@@ -44,6 +46,8 @@ class ToDoList:
             insert_query = "INSERT INTO py_todo_items (task, due_date) VALUES (%s, %s)"
             self.cursor.execute(insert_query, (task, due_date))
             self.conn.commit()
+            # add database backup after adding a task
+            self.perform_backup('add', task)  # Perform database backup after adding a task
         except mysql.connector.Error as err:
             print("Error occurred:", err)
 
@@ -65,6 +69,7 @@ class ToDoList:
                 update_query = "UPDATE task_statistics SET date_completed = CURDATE() WHERE task = %s"
                 self.cursor.execute(update_query, (task_name,))
                 self.conn.commit()
+                self.perform_backup('delete', task_name)  # Perform database backup after deleting a task
             else:
                 print("Invalid task number.")
         except mysql.connector.Error as err:
@@ -151,7 +156,7 @@ class ToDoList:
             labels = ['Completed', 'Pending']
             plt.figure(figsize=(8, 8), facecolor='#E4ECF0')
             plt.pie(data, labels=labels, autopct='%1.1f%%', textprops={'fontsize':17.5})
-            plt.title('Total Tasks Completed in Last Week', fontsize=28)
+            plt.title('Total Tasks Completed in Last Month', fontsize=28)
 
             # Use os.path.join to create the image path
             image_path_pie = os.path.join('static', 'assets', 'pie_chart.png')
@@ -233,6 +238,43 @@ class ToDoList:
             return trend_line_graph_path
         except mysql.connector.Error as err:
             print("Error occurred:", err)
+
+    def backup_database(self, version, action, task_name):
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        try:
+            # Quote the task_name to handle special characters and spaces
+            quoted_task_name = quote(task_name, safe='')
+        except Exception as e:
+            print(f"Error occurred while quoting task name: {e}")
+            return
+        backup_filename = f"db_backup/py_todo_db_{timestamp}_v{version}_{action}_{quoted_task_name}.sql"
+        try:
+            # Construct the mysqldump command
+            command = f"mysqldump -u root -ppassword py_todo_db > {backup_filename}"
+            subprocess.run(command, check=True, shell=True)
+            print(f"Backup successful: {backup_filename}")
+        except subprocess.CalledProcessError as e:
+            print(f"Error occurred during backup: {e}")
+
+    def get_latest_backup_version(self):
+        # List all backup files in the db_backup directory
+        backup_files = os.listdir('db_backup')
+        # Extract version numbers from files
+        versions = []
+        for file in backup_files:
+            if file.startswith('py_todo_db_'):
+                try:
+                    version = int(file.split('_v')[-1].split('_')[0])
+                    versions.append(version)
+                except ValueError:
+                    print(f"Unexpected file format: {file}")
+        # Return the highest version number
+        return max(versions) if versions else 0
+
+    def perform_backup(self, action, task_name):
+        version = self.get_latest_backup_version() + 1
+        self.backup_database(version, action, task_name)
+
     def close_connection(self):
         try:
             self.conn.close()
@@ -390,5 +432,3 @@ if __name__ == "__main__":
     #total_completed_tasks_month_percentage = to_do_list.total_completed_tasks_month_percentage()
     #average_completion_time = to_do_list.average_completion_time()
     app.run(debug=True)
-
-
