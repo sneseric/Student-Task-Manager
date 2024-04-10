@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>To-Do List</title>
         <link rel="stylesheet" type="text/css" href="../static/styles/styles.css">
+        <link rel="preload" href="{{ url_for('static', filename='assets/logo.webp') }}" as="image">
         <script src="../static/scripts/scripts.js" defer></script>
     </head>
     <body>
@@ -43,13 +44,13 @@
                         <input type="text" name="task" placeholder="Enter a task" required>
                         <input type="date" name="due_date" placeholder="Due Date" required>
                         <label for="due_date">Due Date</label>
-                        <button type="submit">Add</button> 
+                        <button type="submit">Add</button>
                     </form>
 
                     <ul>
                         {% for task, due_date in tasks %}
                             <li>
-                                {{ task }} - Due Date - {{ due_date.strftime('%m/%d/%Y') if due_date else 'No date' }}
+                                {{ task }} - Due Date - <span class="due-date">{{ due_date.strftime('%m/%d/%Y') if due_date else 'No date' }}</span>
                                 <form action="/delete_task" method="post" style="display: inline;">
                                     <input type="hidden" name="task_index" value="{{ loop.index }}">
                                     <button type="submit">&#10003;</button>
@@ -57,7 +58,7 @@
                             </li>
                         {% endfor %}
                     </ul>
-                </div>   
+                </div>
             </div>
             <div class="section">
                 <h2>What is CloudTask Pro?</h2>
@@ -94,7 +95,7 @@
                     <img style="margin-top: -50px;" src="{{ trend_line_graph_path }}" alt="Trend Line Graph">
                 </div>
             </div>
-        </div>      
+        </div>
     </body>
 </html>
 

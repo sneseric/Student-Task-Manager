@@ -7,6 +7,28 @@ body {
     padding-top: 50px; 
 }
 
+/* Optimize image loading*/
+/* For desktops and laptops */
+@media (max-width: 1024px) {
+    img {
+        width: 50%;
+    }
+}
+
+/* For tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+    img {
+        width: 50%;
+    }
+}
+
+/* For mobile phones */
+@media (max-width: 767px) {
+    img {
+        width: 70%;
+    }
+}
+
 header {
     display: flex;
     justify-content: center;

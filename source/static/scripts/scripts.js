@@ -58,5 +58,33 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.appendChild(popup);
     }
 
+    // Highlight overdue tasks
+    // Select all elements that contain the due dates
+    let dueDateItems = document.querySelectorAll('.due-date');
+
+    // Get current date and set time to 00:00:00
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Iterate over the due date items
+    dueDateItems.forEach(function(dueDateItem) {
+    // Get the text content and convert it to a date
+    let dueDateString = dueDateItem.textContent || dueDateItem.innerText;
+    let dueDate = new Date(dueDateString);
+
+    // Compare the due date with the current date
+    if (dueDate < currentDate) {
+        // If the due date is before the current date, highlight it in red
+        dueDateItem.style.backgroundColor = 'red';
+        dueDateItem.style.color = 'white';
+    }
 });
+
+
+});
+
+
+
+
+
 
