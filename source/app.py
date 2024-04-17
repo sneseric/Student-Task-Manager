@@ -74,6 +74,9 @@ class ToDoList:
                 print("Invalid task number.")
         except mysql.connector.Error as err:
             print("Error occurred:", err)
+        finally:
+            # Refresh the page after a task is successfully deleted
+            return redirect(url_for('index'))
 
     def view_tasks(self):
         try:
@@ -154,9 +157,9 @@ class ToDoList:
             total_tasks = self.total_tasks()
             data = [total_completed_tasks_week, total_tasks - total_completed_tasks_week]
             labels = ['Completed', 'Pending']
-            plt.figure(figsize=(8, 8), facecolor='#E4ECF0')
-            plt.pie(data, labels=labels, autopct='%1.1f%%', textprops={'fontsize':17.5})
-            plt.title('Total Tasks Completed in Last Month', fontsize=28)
+            plt.figure(figsize=(6, 6), facecolor='#E4ECF0')
+            plt.pie(data, labels=labels, autopct='%1.1f%%', textprops={'fontsize':14})
+            plt.title('Total Tasks Completed in Last Week', fontsize=22)
 
             # Use os.path.join to create the image path
             image_path_pie = os.path.join('static', 'assets', 'pie_chart.png')
