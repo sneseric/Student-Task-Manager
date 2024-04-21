@@ -31,7 +31,7 @@ Web Application Project - Student Task Manager
    ```
    
 
-5. **Edit this code int he app.py file for your local MySQL credentials**
+5. **Edit this code in The app.py file for your local MySQL credentials**
 
    ```
    user="root",
