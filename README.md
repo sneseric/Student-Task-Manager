@@ -1,2 +1,48 @@
 # cen4350c
 Web Application Project - Student Task Manager
+
+## Prerequisites
+
+- Python 3.10
+- MySQL 8.0.31
+- PyCharm or similar IDE/text editor installed on your machine.
+- A web browswer to run the server in localhost.
+
+## Setup
+
+1. **Clone the repository:**
+
+   ```
+   git clone https://github.com/sneseric/cen4350c.git
+   ```
+
+2. **Install the dependencies**
+
+   ```
+   pip install -r requirements.txt
+   ```
+   
+4. Load the database file into your MySQL server
+
+   ```
+   CREATE DATABASE py_todo_db;
+   EXIT;
+   Get-Content py_todo_db.sql | mysql -u <username> -p py_todo_db
+   ```
+   
+
+5. **Edit this code int he app.py file for your local MySQL credentials**
+
+   ```
+   user="root",
+   password="password",
+   ```
+
+6. Run wsgi.py
+
+7. In your web browser, navigate to http://localhost:5000/
+
+## Usage
+
+1. From left-hand column, add and delete tasks as needed.
+2. In middle column, toggle the daily task summary button on/off as desired to view notifications due today and tommorow (will show on page refresh and add/delete task).
