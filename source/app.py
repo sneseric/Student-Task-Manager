@@ -23,7 +23,7 @@ class ToDoList:
                 database="py_todo_db"
             )
             self.cursor = self.conn.cursor()
-            self.create_table()
+            self.create_tables()
         except mysql.connector.Error as err:
             print("Error occurred:", err)
 
