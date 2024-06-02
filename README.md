@@ -4,9 +4,9 @@ Web Application Project - Student Task Manager
 ## Prerequisites
 
 - Python 3.10
-- MySQL 8.0.31
+- MySQL 8.xx
 - PyCharm or similar IDE/text editor installed on your machine.
-- A web browswer to run the server in localhost.
+- A web browser to run the server in localhost.
 
 ## Setup
 
