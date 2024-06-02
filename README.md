@@ -22,25 +22,17 @@ Web Application Project - Student Task Manager
    pip install -r requirements.txt
    ```
    
-4. Load the database file into your MySQL server
 
-   ```
-   CREATE DATABASE py_todo_db;
-   EXIT;
-   Get-Content py_todo_db.sql | mysql -u <username> -p py_todo_db
-   ```
-   
-
-5. **Edit this code in The app.py file for your local MySQL credentials**
+3. **Edit this code in The app.py file for your local MySQL credentials**
 
    ```
    user="root",
    password="password",
    ```
 
-6. Run wsgi.py
+4. Run wsgi.py
 
-7. In your web browser, navigate to http://localhost:5000/
+5. In your web browser, navigate to http://localhost:5000/
 
 ## Usage
 
