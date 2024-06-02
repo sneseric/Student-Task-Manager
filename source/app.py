@@ -27,8 +27,9 @@ class ToDoList:
         except mysql.connector.Error as err:
             print("Error occurred:", err)
 
-    def create_table(self):
+    def create_tables(self):
         try:
+            # Create py_todo_items table
             create_table_query = """
                 CREATE TABLE IF NOT EXISTS py_todo_items (
                     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,17 +38,37 @@ class ToDoList:
                 )
             """
             self.cursor.execute(create_table_query)
-            self.conn.commit()
-        except mysql.connector.Error as err:
-            print("Error occurred:", err)
 
-    def add_task(self, task, due_date):
-        try:
-            insert_query = "INSERT INTO py_todo_items (task, due_date) VALUES (%s, %s)"
-            self.cursor.execute(insert_query, (task, due_date))
+            # Create completion_time table
+            create_table_query = """
+                CREATE TABLE IF NOT EXISTS completion_time (
+                    date DATE PRIMARY KEY,
+                    avg_completion_time DECIMAL(5,2)
+                )
+            """
+            self.cursor.execute(create_table_query)
+
+            # Create notification_status table
+            create_table_query = """
+                CREATE TABLE IF NOT EXISTS notification_status (
+                    on TINYINT(1),
+                    off TINYINT(1)
+                )
+            """
+            self.cursor.execute(create_table_query)
+
+            # Create task_statistics table
+            create_table_query = """
+                CREATE TABLE IF NOT EXISTS task_statistics (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    task VARCHAR(255),
+                    date_added DATE,
+                    date_completed DATE
+                )
+            """
+            self.cursor.execute(create_table_query)
+
             self.conn.commit()
-            # add database backup after adding a task
-            self.perform_backup('add', task)  # Perform database backup after adding a task
         except mysql.connector.Error as err:
             print("Error occurred:", err)
 
