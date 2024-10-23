@@ -1,5 +1,5 @@
 # cen4350c
-Web Application Project - Student Task Manager
+Todo list built using Python/Flask. Features include remidners and task completion statistics.
 
 ## Prerequisites
 
