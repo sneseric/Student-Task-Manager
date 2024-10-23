@@ -1,4 +1,4 @@
-# cen4350c
+# Student-Task-Manager
 Todo list built using Python/Flask. Features include remidners and task completion statistics.
 
 ## Prerequisites
