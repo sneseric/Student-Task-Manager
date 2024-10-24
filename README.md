@@ -1,5 +1,5 @@
 # Student-Task-Manager
-Todo list built using Python/Flask. Features include remidners and task completion statistics.
+Todo list built using Python/Flask. Features include reminders and task completion statistics.
 
 ## Prerequisites
 
